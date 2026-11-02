@@ -31,14 +31,12 @@ jobs:
 
       - name: Prepare Project Structure & Clean Java Artifacts
         run: |
-          # إزالة أي ملفات إعدادات kotlin معطوبة متراكمة مسبقاً لمنع خطأ Script compilation error
           rm -f settings.gradle.kts build.gradle.kts app/build.gradle.kts || true
           if [ -f "settings.gradle" ]; then
             sed -i 's/rootProject.name\s*=.*/rootProject.name = "gh3"/g' settings.gradle || true
             sed -i 's/FAIL_ON_PROJECT_REPOS/PREFER_SETTINGS/g' settings.gradle || true
           fi
           printf "buildscript {\n    repositories {\n        google()\n        mavenCentral()\n    }\n    dependencies {\n        classpath 'com.android.tools.build:gradle:8.2.2'\n        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.22'\n    }\n}\n\nallprojects {\n    repositories {\n        google()\n        mavenCentral()\n    }\n}\n" > build.gradle
-          # تنظيف أي استيراد خاطئ لـ ViewBinding في كوتلن تلقائياً
           sed -i '/ActivityMain.*Binding/d' app/src/main/java/**/*.kt 2>/dev/null || true
           if ls app/src/main/java/**/*.kt 1> /dev/null 2>&1; then
             find app/src/main/java -type f -name "MainActivity.java" -delete || true
@@ -51,23 +49,8 @@ jobs:
             cp -f privacy_policy.html app/src/main/assets/www/privacy_policy.html || true
           fi
           rm -f preview.html || true
-          # حماية إضافية: نقل أي ملفات واجهات وضعت بالخطأ في مجلد values إلى layout
-          mkdir -p app/src/main/res/layout
+          mkdir -p app/src/main/res/layout app/src/main/res/xml
           grep -rnwl 'app/src/main/res/values' -e '<LinearLayout' -e '<RelativeLayout' -e '<FrameLayout' -e '<androidx' 2>/dev/null | while read f; do mv -f "$f" app/src/main/res/layout/ 2>/dev/null || true; done
-          # توليد ملف تكوين مشاركة الملفات (FileProvider paths) تلقائياً لمنع تعطل الكاميرا في جميع التطبيقات
-          mkdir -p app/src/main/res/xml
-          if [ ! -f "app/src/main/res/xml/file_paths.xml" ]; then
-            cat << 'EOF' > app/src/main/res/xml/file_paths.xml
-<?xml version="1.0" encoding="utf-8"?>
-<paths xmlns:android="http://schemas.android.com/apk/res/android">
-    <root-path name="root" path="." />
-    <cache-path name="cache" path="." />
-    <external-cache-path name="external_cache" path="." />
-    <files-path name="files" path="." />
-    <external-files-path name="external_files" path="." />
-</paths>
-EOF
-          fi
           for d in mipmap-hdpi mipmap-xhdpi mipmap-xxhdpi mipmap-xxxhdpi drawable; do
             mkdir -p "app/src/main/res/$d"
           done
@@ -88,10 +71,8 @@ EOF
           done
           mkdir -p keystore app
           if [ -f "keystore/release.keystore" ]; then
-            echo "المفتاح الدائم موجود، سيتم اعتماده لضمان قبول التحديثات."
             cp keystore/release.keystore release.keystore
           else
-            echo "توليد وتثبيت مفتاح التوقيع الدائم للتطبيق..."
             keytool -genkeypair -v -keystore keystore/release.keystore -alias appkey -keyalg RSA -keysize 2048 -validity 10000 -storepass appmaker123 -keypass appmaker123 -dname "CN=AppMaker, OU=Mobile, O=AppMaker, L=Algiers, S=Algiers, C=DZ"
             cp keystore/release.keystore release.keystore
             git config --global user.name "github-actions[bot]"
@@ -112,11 +93,11 @@ EOF
           BUILD_TOOLS_DIR=$(ls -d $ANDROID_HOME/build-tools/* | sort -V | tail -n 1)
           find app/build/outputs/apk/release -name "*.apk" | while read APK_FILE; do
             $BUILD_TOOLS_DIR/zipalign -v -p 4 "$APK_FILE" aligned.apk || cp "$APK_FILE" aligned.apk
-            $BUILD_TOOLS_DIR/apksigner sign --ks release.keystore --ks-pass pass:appmaker123 --key-pass pass:appmaker123 --out "gh3-v1.0.2.apk" aligned.apk
+            $BUILD_TOOLS_DIR/apksigner sign --ks release.keystore --ks-pass pass:appmaker123 --key-pass pass:appmaker123 --out "gh3-v1.0.3.apk" aligned.apk
             break
           done
           find app/build/outputs/bundle/release -name "*.aab" | while read AAB_FILE; do
-            cp "$AAB_FILE" "gh3-v1.0.2.aab"
+            cp "$AAB_FILE" "gh3-v1.0.3.aab"
             break
           done
 
@@ -124,11 +105,11 @@ EOF
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/heads/')
         with:
-          tag_name: v1.0.2
-          name: "gh3 v1.0.2 (Official Release)"
+          tag_name: v1.0.3
+          name: "gh3 v1.0.3 (Official Release)"
           files: |
-            gh3-v1.0.2.apk
-            gh3-v1.0.2.aab
+            gh3-v1.0.3.apk
+            gh3-v1.0.3.aab
             release.keystore
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
