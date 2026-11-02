@@ -1,13 +1,9 @@
 package com.appmaker.quickbill.ui
 
 import android.Manifest
-import android.content.ActivityNotFoundException
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
-import android.provider.Settings
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,26 +13,16 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.core.os.bundleOf
-import androidx.fragment.app.setFragmentResult
-import androidx.lifecycle.lifecycleScope
 import coil.load
 import com.appmaker.quickbill.R
-import com.appmaker.quickbill.data.ImageStore
-import com.appmaker.quickbill.model.BillCategory
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.io.File
 import java.util.UUID
 
-// @Permissions: android.permission.CAMERA
 class AddBillSheet : BottomSheetDialogFragment() {
 
     companion object {
@@ -121,8 +107,8 @@ class AddBillSheet : BottomSheetDialogFragment() {
         val galleryButton = view.findViewById<MaterialButton>(R.id.galleryButton)
 
         cameraButton?.setOnClickListener {
-            val context = requireContext()
-            if (ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+            val ctx = requireContext()
+            if (ContextCompat.checkSelfPermission(ctx, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
                 launchCamera()
             } else {
                 cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
@@ -167,7 +153,7 @@ class AddBillSheet : BottomSheetDialogFragment() {
                 RESULT_CREATED_AT to System.currentTimeMillis()
             )
 
-            setFragmentResult(RESULT_KEY, bundle)
+            parentFragmentManager.setFragmentResult(RESULT_KEY, bundle)
             dismiss()
         }
     }
@@ -182,9 +168,9 @@ class AddBillSheet : BottomSheetDialogFragment() {
 
     private fun launchCamera() {
         try {
-            val context = requireContext()
-            val file = File(context.cacheDir, "bill_${System.currentTimeMillis()}.jpg")
-            val uri = FileProvider.getUriForFile(context, "${context.packageName}.fileprovider", file)
+            val ctx = requireContext()
+            val file = File(ctx.cacheDir, "bill_${System.currentTimeMillis()}.jpg")
+            val uri = FileProvider.getUriForFile(ctx, "${ctx.packageName}.fileprovider", file)
             pendingCaptureUri = uri
             takePictureLauncher.launch(uri)
         } catch (e: Exception) {
