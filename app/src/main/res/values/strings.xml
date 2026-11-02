@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">حافظة الفواتير الذكية</string>
+
+    <string name="add_bill">إضافة فاتورة</string>
+    <string name="total_label">إجمالي المبالغ المسجلة</string>
+    <string name="bill_count">%1$d فاتورة</string>
+    <string name="amount_with_currency">%1$s ر.س</string>
+
+    <string name="filter_by_category">تصفية حسب التصنيف</string>
+    <string name="filter_all">جميع الفواتير</string>
+
+    <string name="category_food">طعام</string>
+    <string name="category_shopping">تسوق</string>
+    <string name="category_home">منزلية</string>
+    <string name="category_other">أخرى</string>
+    <string name="category_label">التصنيف</string>
+
+    <string name="new_bill_title">فاتورة جديدة</string>
+    <string name="capture_camera">الكاميرا</string>
+    <string name="pick_gallery">المعرض</string>
+    <string name="store_name_hint">اسم المتجر</string>
+    <string name="amount_hint">المبلغ</string>
+    <string name="save_bill">حفظ الفاتورة</string>
+
+    <string name="bill_thumbnail">صورة الفاتورة</string>
+    <string name="bill_image_preview">معاينة صورة الفاتورة</string>
+    <string name="bill_details_title">تفاصيل الفاتورة</string>
+
+    <string name="empty_title">لا توجد فواتير</string>
+    <string name="empty_desc">اضغط على زر الإضافة لتوثيق أول فاتورة لك</string>
+
+    <string name="delete">حذف</string>
+    <string name="cancel">إلغاء</string>
+    <string name="open_settings">فتح الإعدادات</string>
+
+    <string name="permission_needed_title">صلاحية مطلوبة</string>
+    <string name="permission_camera_rationale">يحتاج التطبيق صلاحية الكاميرا لالتقاط صور الفواتير. يمكنك تفعيلها من الإعدادات.</string>
+    <string name="permission_camera_denied">تم رفض صلاحية الكاميرا</string>
+    <string name="permission_not_declared">الصلاحية غير مهيأة</string>
+    <string name="error_no_camera">لا يوجد تطبيق كاميرا متاح</string>
+    <string name="error_image_save">تعذر حفظ الصورة</string>
+    <string name="error_store_required">أدخل اسم المتجر</string>
+    <string name="error_amount_invalid">أدخل مبلغًا صحيحًا</string>
+    <string name="error_category_required">اختر التصنيف</string>
+</resources>
