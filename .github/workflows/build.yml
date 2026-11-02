@@ -51,6 +51,9 @@ jobs:
             cp -f privacy_policy.html app/src/main/assets/www/privacy_policy.html || true
           fi
           rm -f preview.html || true
+          # حماية إضافية: نقل أي ملفات واجهات وضعت بالخطأ في مجلد values إلى layout
+          mkdir -p app/src/main/res/layout
+          grep -rnwl 'app/src/main/res/values' -e '<LinearLayout' -e '<RelativeLayout' -e '<FrameLayout' -e '<androidx' 2>/dev/null | while read f; do mv -f "$f" app/src/main/res/layout/ 2>/dev/null || true; done
           for d in mipmap-hdpi mipmap-xhdpi mipmap-xxhdpi mipmap-xxxhdpi drawable; do
             mkdir -p "app/src/main/res/$d"
           done
@@ -95,11 +98,11 @@ jobs:
           BUILD_TOOLS_DIR=$(ls -d $ANDROID_HOME/build-tools/* | sort -V | tail -n 1)
           find app/build/outputs/apk/release -name "*.apk" | while read APK_FILE; do
             $BUILD_TOOLS_DIR/zipalign -v -p 4 "$APK_FILE" aligned.apk || cp "$APK_FILE" aligned.apk
-            $BUILD_TOOLS_DIR/apksigner sign --ks release.keystore --ks-pass pass:appmaker123 --key-pass pass:appmaker123 --out "gh3-v1.0.0.apk" aligned.apk
+            $BUILD_TOOLS_DIR/apksigner sign --ks release.keystore --ks-pass pass:appmaker123 --key-pass pass:appmaker123 --out "gh3-v1.0.1.apk" aligned.apk
             break
           done
           find app/build/outputs/bundle/release -name "*.aab" | while read AAB_FILE; do
-            cp "$AAB_FILE" "gh3-v1.0.0.aab"
+            cp "$AAB_FILE" "gh3-v1.0.1.aab"
             break
           done
 
@@ -107,11 +110,11 @@ jobs:
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/heads/')
         with:
-          tag_name: v1.0.0
-          name: "gh3 v1.0.0 (Official Release)"
+          tag_name: v1.0.1
+          name: "gh3 v1.0.1 (Official Release)"
           files: |
-            gh3-v1.0.0.apk
-            gh3-v1.0.0.aab
+            gh3-v1.0.1.apk
+            gh3-v1.0.1.aab
             release.keystore
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
