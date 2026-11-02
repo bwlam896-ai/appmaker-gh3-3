@@ -1,9 +1,9 @@
 {
   "id": 3,
-  "name": "غ",
+  "name": "ملاحضات",
   "packageId": "com.appmaker.gh3",
   "versionCode": 1,
-  "versionName": "1.0.0",
+  "versionName": "1.0.1",
   "type": "Kotlin",
   "orientation": "portrait",
   "fullscreen": false,
@@ -38,5 +38,5 @@
     "foregroundService": false,
     "biometric": false
   },
-  "updatedAt": "2026-11-02T07:26:50.798Z"
+  "updatedAt": "2026-11-02T08:06:23.112Z"
 }
