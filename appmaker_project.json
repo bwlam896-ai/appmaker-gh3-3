@@ -3,7 +3,7 @@
   "name": "ملاحضات",
   "packageId": "com.appmaker.gh3",
   "versionCode": 1,
-  "versionName": "1.0.3",
+  "versionName": "1.0.4",
   "type": "Kotlin",
   "orientation": "portrait",
   "fullscreen": false,
@@ -38,5 +38,5 @@
     "foregroundService": false,
     "biometric": false
   },
-  "updatedAt": "2026-11-02T10:12:17.750Z"
+  "updatedAt": "2026-11-02T21:29:29.712Z"
 }
