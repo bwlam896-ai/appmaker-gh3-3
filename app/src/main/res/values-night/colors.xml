@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary">#87D6B9</color>
+    <color name="on_primary">#003828</color>
+    <color name="primary_container">#005140</color>
+    <color name="on_primary_container">#A3F2D0</color>
+    <color name="secondary">#B5CCBF</color>
+    <color name="on_secondary">#20352A</color>
+    <color name="secondary_container">#364B40</color>
+    <color name="on_secondary_container">#D1E8D9</color>
+    <color name="surface">#191C1A</color>
+    <color name="on_surface">#E1E3DF</color>
+    <color name="surface_variant">#404943</color>
+    <color name="on_surface_variant">#C0C9C1</color>
+    <color name="outline">#8A938C</color>
+    <color name="background">#101411</color>
+
+    <color name="category_food">#EF5350</color>
+    <color name="category_shopping">#42A5F5</color>
+    <color name="category_home">#FFA726</color>
+    <color name="category_other">#BDBDBD</color>
+    <color name="category_text_color">#FFFFFF</color>
+    <color name="delete_red">#EF5350</color>
+</resources>
